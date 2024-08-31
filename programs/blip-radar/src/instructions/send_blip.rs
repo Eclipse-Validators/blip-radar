@@ -1,14 +1,19 @@
 use anchor_lang::prelude::*;
 use anchor_lang::system_program::{transfer, Transfer};
 
+use mpl_core::instructions::CreateV2CpiBuilder;
+
 use crate::constants::FEE_DESTINATION;
 use crate::errors::BlipRadarError;
 
 const BLIP_FEE_AMOUNT: u64 = 1_000_000;
 
-pub fn send_blip(ctx: Context<SendBlip>) -> Result<()> {
+pub fn send_blip(ctx: Context<SendBlip>, asset_json_uri: String) -> Result<()> {
+    let asset_account = &ctx.accounts.asset;
     let payer_account = &ctx.accounts.payer;
     let fee_destination_account = &ctx.accounts.fee_destination;
+    let receiver_account = &ctx.accounts.receiver;
+    let mpl_core_program = &ctx.accounts.mpl_core_program;
     let system_program = &ctx.accounts.system_program;
 
     require_keys_eq!(
@@ -30,17 +35,39 @@ pub fn send_blip(ctx: Context<SendBlip>) -> Result<()> {
 
     msg!("transfer Blip fee to {}", fee_destination_account.key());
 
+    CreateV2CpiBuilder::new(mpl_core_program)
+        .asset(asset_account)
+        // NEED TO CREATE COLLECTION
+        // .collection(context.accounts.collection)
+        .authority(None)
+        .payer(payer_account)
+        .owner(Some(receiver_account))
+        .update_authority(None)
+        .system_program(system_program)
+        .name("Blip".to_string())
+        .uri(asset_json_uri)
+        .invoke();
+
     Ok(())
 }
 
 #[derive(Accounts)]
-#[instruction()]
+#[instruction(asset_json_uri: String)]
 pub struct SendBlip<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
 
+    pub receiver: SystemAccount<'info>,
+
     #[account(mut)]
     pub fee_destination: SystemAccount<'info>,
+
+    #[account(mut)]
+    pub asset: Signer<'info>,
+
+    /// CHECK: account checked in CPI
+    #[account(address = mpl_core::ID)]
+    pub mpl_core_program: UncheckedAccount<'info>,
 
     pub system_program: Program<'info, System>,
 }

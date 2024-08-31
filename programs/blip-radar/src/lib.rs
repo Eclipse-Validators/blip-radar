@@ -13,8 +13,8 @@ pub mod blip_radar {
     use super::*;
 
 
-    pub fn send_blip(ctx: Context<SendBlip>) -> Result<()> {
-        instructions::send_blip(ctx)
+    pub fn send_blip(ctx: Context<SendBlip>, asset_json_uri: String) -> Result<()> {
+        instructions::send_blip(ctx, asset_json_uri)
     }
 }
 
