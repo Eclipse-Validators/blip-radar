@@ -5,7 +5,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-blip_radar = "BvD8LJS8jmoRoGchwvJs5hbJhdMAYg8hcA4H7wr4jBdy"
+blip_radar = "rdrXzA9XiyvxrBdd6AweQPQHRw2hYTGdUb43rUPaerS"
 
 [registry]
 url = "https://api.apr.dev"

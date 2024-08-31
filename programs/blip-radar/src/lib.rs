@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("BvD8LJS8jmoRoGchwvJs5hbJhdMAYg8hcA4H7wr4jBdy");
+declare_id!("rdrXzA9XiyvxrBdd6AweQPQHRw2hYTGdUb43rUPaerS");
 
 #[program]
 pub mod blip_radar {
