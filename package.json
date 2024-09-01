@@ -12,7 +12,8 @@
     "@metaplex-foundation/umi-bundle-defaults": "^0.9.2",
     "@metaplex-foundation/umi-web3js-adapters": "^0.9.2",
     "@solana/spl-token": "^0.4.8",
-    "@solana/web3.js": "^1.95.3"
+    "@solana/web3.js": "^1.95.3",
+    "commander": "^12.1.0"
   },
   "devDependencies": {
     "@types/bn.js": "^5.1.0",
