@@ -1,6 +1,25 @@
+import fs from "fs";
+
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { BlipRadar } from "../target/types/blip_radar";
+
+export function loadPrivateKeyFromUint8String(
+  prikey: string
+): anchor.web3.Keypair {
+  const privateKey = JSON.parse(prikey);
+  return anchor.web3.Keypair.fromSecretKey(Uint8Array.from(privateKey));
+}
+
+export function loadAuthorityWallet(): anchor.web3.Keypair {
+  const authorityPath = process.env.AUTHORITY_WALLET_RELATIVE_PATH;
+  if (!authorityPath) {
+    throw new Error("define AUTHORITY_WALLET_RELATIVE_PATH in env");
+  }
+
+  const keyFile = fs.readFileSync(authorityPath, "utf-8");
+  return loadPrivateKeyFromUint8String(keyFile);
+}
 
 describe("blip-radar", () => {
   anchor.setProvider(anchor.AnchorProvider.env());
@@ -11,8 +30,6 @@ describe("blip-radar", () => {
   );
   const payer = new anchor.web3.Keypair();
   anchor.setProvider(new anchor.AnchorProvider(conn, new anchor.Wallet(payer)));
-
-  console.log(anchor.getProvider());
 
   const program = anchor.workspace.BlipRadar as Program<BlipRadar>;
 
@@ -25,6 +42,7 @@ describe("blip-radar", () => {
 
     const receiverAccount = anchor.web3.Keypair.generate();
 
+    const authority = loadAuthorityWallet();
     const receiverSig = await conn.requestAirdrop(
       receiverAccount.publicKey,
       1_000_000 * 1
@@ -52,11 +70,15 @@ describe("blip-radar", () => {
         mplCoreProgram: new anchor.web3.PublicKey(
           "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d"
         ),
+        collection: new anchor.web3.PublicKey(
+          "HZp57kjtHqxptkn5KL4nJsZV5LYvGWb2oteGtB3t93wy"
+        ),
+        collectionAuthority: authority.publicKey,
         systemProgram: new anchor.web3.PublicKey(
           "11111111111111111111111111111111"
         ),
       })
-      .signers([asset, payer])
+      .signers([asset, payer, authority])
       .rpc();
     console.log("Your transaction signature", tx);
   });
