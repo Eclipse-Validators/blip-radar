@@ -6,7 +6,7 @@ pub mod constants;
 pub mod errors;
 pub mod instructions;
 
-declare_id!("rdrXzA9XiyvxrBdd6AweQPQHRw2hYTGdUb43rUPaerS");
+declare_id!("rdr1DeFWkwG6nQfammDLTzRT6uW32t7yEHWCmcr49Df");
 
 #[program]
 pub mod blip_radar {
