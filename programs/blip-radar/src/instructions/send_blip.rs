@@ -5,6 +5,7 @@ use mpl_core::instructions::CreateV2CpiBuilder;
 
 use crate::constants::{AUTHORITY, FEE_DESTINATION};
 use crate::errors::BlipRadarError;
+use crate::state::BlipCounter;
 
 const BLIP_FEE_AMOUNT: u64 = 1_000_000;
 
@@ -17,6 +18,7 @@ pub fn send_blip(ctx: Context<SendBlip>, asset_json_uri: String) -> Result<()> {
     let collection_authority_account = &ctx.accounts.collection_authority;
     let mpl_core_program = &ctx.accounts.mpl_core_program;
     let system_program = &ctx.accounts.system_program;
+    let blip_counter = &mut ctx.accounts.blip_counter;
 
     require_keys_eq!(
         fee_destination_account.key(),
@@ -55,6 +57,8 @@ pub fn send_blip(ctx: Context<SendBlip>, asset_json_uri: String) -> Result<()> {
         .uri(asset_json_uri)
         .invoke()?;
 
+    blip_counter.count += 1;
+
     Ok(())
 }
 
@@ -65,6 +69,15 @@ pub struct SendBlip<'info> {
     pub payer: Signer<'info>,
 
     pub receiver: SystemAccount<'info>,
+
+    #[account(
+        init_if_needed,
+        payer = payer,
+        space = 8 + 8, // 8 bytes for discriminator + 8 bytes for count
+        seeds = [b"blip_counter", payer.key().as_ref()],
+        bump
+    )]
+    pub blip_counter: Account<'info, BlipCounter>,
 
     #[account(mut)]
     pub fee_destination: SystemAccount<'info>,
@@ -83,3 +96,4 @@ pub struct SendBlip<'info> {
 
     pub system_program: Program<'info, System>,
 }
+

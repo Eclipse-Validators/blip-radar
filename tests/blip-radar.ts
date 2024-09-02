@@ -57,7 +57,10 @@ describe("blip-radar", () => {
 
     await conn.confirmTransaction(receiverSig);
     await conn.confirmTransaction(payerSig);
-
+    const [blipCounterPda, _] = await anchor.web3.PublicKey.findProgramAddress(
+      [Buffer.from("blip_counter"), payer.publicKey.toBuffer()],
+      program.programId
+    );
     const tx = await program.methods
       .sendBlip(
         "https://arweave.net/8FDIo_3e5EJBx_1Nq9tdeZ1XZHN2_3GDomncAYKw1jM"
@@ -77,9 +80,13 @@ describe("blip-radar", () => {
         systemProgram: new anchor.web3.PublicKey(
           "11111111111111111111111111111111"
         ),
+        blipCounter: blipCounterPda,
       })
       .signers([asset, payer, authority])
       .rpc();
+    await conn.confirmTransaction(tx);
+    const counter = await program.account.blipCounter.fetch(blipCounterPda);
+    console.log('Counter PDA', counter.count, JSON.stringify(counter, null, 2))
     console.log("Your transaction signature", tx);
   });
 });
