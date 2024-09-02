@@ -1,6 +1,7 @@
 {
   "scripts": {
     "deploy:devnet": "anchor build && anchor deploy --program-name blip_radar --program-keypair ./rdr1DeFWkwG6nQfammDLTzRT6uW32t7yEHWCmcr49Df.json --provider.cluster https://staging-rpc.dev2.eclipsenetwork.xyz --provider.wallet ./vdtrTQmvkhzaxYnrTohCeMZg6Y9tk7BvnGDjuAQc3r7.json",
+    "deploy:mainnet": "anchor build && anchor deploy --program-name blip_radar --program-keypair ./rdr1DeFWkwG6nQfammDLTzRT6uW32t7yEHWCmcr49Df.json --provider.cluster https://mainnetbeta-rpc.eclipse.xyz --provider.wallet ./vdtrTQmvkhzaxYnrTohCeMZg6Y9tk7BvnGDjuAQc3r7.json",
     "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
     "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check"
   },

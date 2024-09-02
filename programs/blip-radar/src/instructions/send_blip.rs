@@ -53,7 +53,7 @@ pub fn send_blip(ctx: Context<SendBlip>, asset_json_uri: String) -> Result<()> {
         .system_program(system_program)
         .name("Blip".to_string())
         .uri(asset_json_uri)
-        .invoke();
+        .invoke()?;
 
     Ok(())
 }
