@@ -64,7 +64,8 @@ pub struct SendBlip<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
 
-    pub receiver: SystemAccount<'info>,
+    /// CHECK: send to whatever address
+    pub receiver: UncheckedAccount<'info>,
 
     #[account(mut)]
     pub fee_destination: SystemAccount<'info>,
