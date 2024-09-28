@@ -6,7 +6,7 @@ use mpl_core::instructions::CreateV2CpiBuilder;
 use crate::constants::{AUTHORITY, FEE_DESTINATION};
 use crate::errors::BlipRadarError;
 
-const BLIP_FEE_AMOUNT: u64 = 1_000_000;
+const BLIP_FEE_AMOUNT: u64 = 500_000;
 
 pub fn send_blip(ctx: Context<SendBlip>, asset_json_uri: String) -> Result<()> {
     let asset_account = &ctx.accounts.asset;
