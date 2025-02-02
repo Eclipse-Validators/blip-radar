@@ -6,4 +6,11 @@ pub enum BlipRadarError {
   InvalidAuthority,
   #[msg("Invalid Fee Destination")]
   InvalidFeeDestination,
+
+  #[msg("Too many fee shares")]
+  TooManyFeeShares,
+  #[msg("Invalid fee basis points")]
+  InvalidFeeBasisPoints,
+  #[msg("Incorrect Authority")]
+  IncorrectAuthority,
 }
