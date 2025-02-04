@@ -10,6 +10,18 @@ blip_radar = "rdr1DeFWkwG6nQfammDLTzRT6uW32t7yEHWCmcr49Df"
 [registry]
 url = "https://api.apr.dev"
 
+[test.validator]
+url = "https://mainnetbeta-rpc.eclipse.xyz"
+
+[[test.validator.clone]]
+address = "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+
+[[test.validator.clone]]
+address = "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+
+[[test.validator.clone]]
+address = "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d"
+
 [provider]
 cluster = "Localnet"
 wallet = "~/.config/solana/id.json"
