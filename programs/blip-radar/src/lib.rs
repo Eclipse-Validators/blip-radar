@@ -22,7 +22,10 @@ pub mod blip_radar {
         instructions::init_config(ctx, fee_lamports, fee_shares)
     }
 
-    pub fn send_blip(ctx: Context<SendBlip>, asset_json_uri: String) -> Result<()> {
+    pub fn send_blip<'info>(
+        ctx: Context<'_, '_, '_, 'info, SendBlip<'info>>,
+        asset_json_uri: String,
+    ) -> Result<()> {
         instructions::send_blip(ctx, asset_json_uri)
     }
 }

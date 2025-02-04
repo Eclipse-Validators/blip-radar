@@ -13,4 +13,13 @@ pub enum BlipRadarError {
   InvalidFeeBasisPoints,
   #[msg("Incorrect Authority")]
   IncorrectAuthority,
+
+  #[msg("No fee share recipients")]
+  NoFeeShareRecipients,
+  #[msg("Fee share recipient not writable")]
+  FeeShareRecipientNotWritable,
+  #[msg("Invalid fee share recipient")]
+  InvalidFeeShareRecipient,
+  #[msg("Calculation error")]
+  CalculationError,
 }
